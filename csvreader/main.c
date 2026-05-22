@@ -7,9 +7,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
-#include <stdio.h>
 #include <string.h>
+
+#define MAX_ROWS 100
+#define MAX_COLS 100
+
+char* table[MAX_ROWS][MAX_COLS];
 
 int main() {
 
@@ -22,21 +25,39 @@ int main() {
 
     char line[1024];
 
+    int row = 0;
+
     while (fgets(line, sizeof(line), file)) {
+
+        // убрать \n
+        line[strcspn(line, "\n")] = 0;
+
+        int col = 0;
 
         char* token = strtok(line, ",");
 
         while (token != NULL) {
 
-            printf("[%s]\n", token);
+            table[row][col] = token;
 
+            col++;
             token = strtok(NULL, ",");
         }
 
-        printf("-----\n");
+        row++;
     }
 
     fclose(file);
+
+    // --- проверочный вывод таблицы ---
+    printf("\nPARSED TABLE:\n");
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; table[i][j] != NULL && j < MAX_COLS; j++) {
+            printf("[%s] ", table[i][j]);
+        }
+        printf("\n");
+    }
 
     return 0;
 }
