@@ -1,10 +1,3 @@
-//
-//  main.c
-//  csvreader
-//
-//  Created by Иван Агошков on 19.05.2026.
-//
-
 #include <stdio.h>
 
 #include "csv.h"
@@ -24,21 +17,23 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    printf("\nEVALUATED TABLE:\n\n");
-
     for (int i = 0; i < rows; i++) {
 
         for (int j = 0; j < MAX_COLS && table[i][j] != NULL; j++) {
 
+            if (j > 0) {
+                printf(",");
+            }
+
             if (i == 0 || j == 0) {
 
-                printf("[%s] ", table[i][j]);
+                printf("%s", table[i][j]);
             }
             else {
 
                 double value = evaluate_cell(i, j);
 
-                printf("[%.2f] ", value);
+                printf("%.2f", value);
             }
         }
 

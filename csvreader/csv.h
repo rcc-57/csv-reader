@@ -1,10 +1,3 @@
-//
-//  csv.h
-//  csvreader
-//
-//  Created by Иван Агошков on 22.05.2026.
-//
-
 #ifndef CSV_H
 #define CSV_H
 
@@ -15,7 +8,6 @@
 extern char* table[MAX_ROWS][MAX_COLS];
 
 int load_csv(const char* filename);
-void print_table(int rows);
 void free_table(int rows);
 
 #endif

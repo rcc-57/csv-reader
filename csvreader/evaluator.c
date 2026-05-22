@@ -1,10 +1,3 @@
-//
-//  Untitled.c
-//  csvreader
-//
-//  Created by Иван Агошков on 22.05.2026.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,12 +41,6 @@ double get_cell_reference_value(const char* ref) {
 
     column_name[j] = '\0';
 
-    if (ref[i] == '\0') {
-
-        printf("Invalid reference: %s\n", ref);
-        return 0;
-    }
-
     row_number = atoi(&ref[i]);
 
     int col = get_column_index(column_name);
@@ -61,12 +48,6 @@ double get_cell_reference_value(const char* ref) {
     if (col == -1) {
 
         printf("Unknown column: %s\n", column_name);
-        return 0;
-    }
-
-    if (row_number < 0 || row_number >= MAX_ROWS) {
-
-        printf("Invalid row number: %d\n", row_number);
         return 0;
     }
 
@@ -79,7 +60,6 @@ double evaluate_formula(const char* formula) {
     char right[128];
 
     char op = 0;
-
     int op_pos = -1;
 
     for (int i = 0; formula[i]; i++) {
@@ -152,7 +132,7 @@ double evaluate_cell(int row, int col) {
 
     if (visited[row][col]) {
 
-        printf("Circular dependency detected at [%d][%d]\n", row, col);
+        printf("Circular dependency detected\n");
         return 0;
     }
 
