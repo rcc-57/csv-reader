@@ -2,62 +2,50 @@
 //  main.c
 //  csvreader
 //
-//  Created by Иван Агошков on 22.05.2026.
+//  Created by Иван Агошков on 19.05.2026.
 //
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 
-#define MAX_ROWS 100
-#define MAX_COLS 100
+#include "csv.h"
+#include "evaluator.h"
 
-char* table[MAX_ROWS][MAX_COLS];
+int main(int argc, char* argv[]) {
 
-int main() {
+    if (argc < 2) {
 
-    FILE* file = fopen("test_table.csv", "r");
-
-    if (file == NULL) {
-        printf("Cannot open file\n");
+        printf("Usage: ./csvreader <file.csv>\n");
         return 1;
     }
 
-    char line[1024];
+    int rows = load_csv(argv[1]);
 
-    int row = 0;
-
-    while (fgets(line, sizeof(line), file)) {
-
-        // убрать \n
-        line[strcspn(line, "\n")] = 0;
-
-        int col = 0;
-
-        char* token = strtok(line, ",");
-
-        while (token != NULL) {
-
-            table[row][col] = token;
-
-            col++;
-            token = strtok(NULL, ",");
-        }
-
-        row++;
+    if (rows == -1) {
+        return 1;
     }
 
-    fclose(file);
+    printf("\nEVALUATED TABLE:\n\n");
 
-    // --- проверочный вывод таблицы ---
-    printf("\nPARSED TABLE:\n");
+    for (int i = 0; i < rows; i++) {
 
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; table[i][j] != NULL && j < MAX_COLS; j++) {
-            printf("[%s] ", table[i][j]);
+        for (int j = 0; j < MAX_COLS && table[i][j] != NULL; j++) {
+
+            if (i == 0 || j == 0) {
+
+                printf("[%s] ", table[i][j]);
+            }
+            else {
+
+                double value = evaluate_cell(i, j);
+
+                printf("[%.2f] ", value);
+            }
         }
+
         printf("\n");
     }
+
+    free_table(rows);
 
     return 0;
 }
